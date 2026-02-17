@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group {{ group }} - Standings</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo-container-small">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="AAROHAN Logo" class="tournament-logo-small">
+            </div>
+            <h1 class="title">AAROHAN BGMI ELIMS</h1>
+            <p class="subtitle">GROUP {{ group }} STANDINGS - {{ match_count }} MATCHES</p>
+        </header>
+
+        <div class="back-link">
+            <a href="{{ url_for('index') }}">← Back to Dashboard</a>
+        </div>
+
+        {% if leaderboard %}
+        <div class="download-section">
+            <a href="{{ url_for('download_leaderboard', group=group) }}" class="download-btn">
+                📥 Download PDF
+            </a>
+        </div>
+
+        <div class="leaderboard-container">
+            <div class="table-wrapper">
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th class="rank-col">RANK</th>
+                            <th class="team-col">TEAM NAME</th>
+                            <th class="stat-col">WWCD</th>
+                            <th class="stat-col">PLCT.</th>
+                            <th class="stat-col">KILLS</th>
+                            <th class="stat-col total-col">TOTAL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in leaderboard %}
+                        <tr class="{% if loop.index <= 3 %}top-rank{% endif %}">
+                            <td class="rank-col">
+                                <span class="rank-number">{{ row.RANK }}</span>
+                            </td>
+                            <td class="team-col">
+                                <span class="team-name">{{ row.Team }}</span>
+                            </td>
+                            <td class="stat-col">
+                                {% if row.WWCD > 0 %}
+                                <span class="wwcd-value">{{ row.WWCD|int }}</span>
+                                {% else %}
+                                <span class="empty-stat">-</span>
+                                {% endif %}
+                            </td>
+                            <td class="stat-col">{{ row.PLCT|int }}</td>
+                            <td class="stat-col">{{ row.Kills|int }}</td>
+                            <td class="stat-col total-col">
+                                <span class="total-points">{{ row.TOTAL|int }}</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% else %}
+        <div class="no-data">
+            <p>No match data available for Group {{ group }} yet.</p>
+            <a href="{{ url_for('add_match_page', group=group) }}" class="action-btn">Add First Match</a>
+        </div>
+        {% endif %}
+
+        <div class="action-buttons">
+            <a href="{{ url_for('add_match_page', group=group) }}" class="action-btn group-{{ group|lower }}-btn">
+                ➕ Add New Match
+            </a>
+            <a href="{{ url_for('combined_leaderboard') }}" class="action-btn combined-btn">
+                🏆 View Combined Leaderboard
+            </a>
+        </div>
+    </div>
+</body>
+</html>

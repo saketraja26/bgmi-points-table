@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BGMI Tournament - Points Table</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo-container">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="AAROHAN Logo" class="tournament-logo">
+            </div>
+            <h1 class="title">AAROHAN BGMI ELIMS</h1>
+            <p class="subtitle">POINTS TABLE SYSTEM</p>
+        </header>
+
+        <div class="dashboard">
+            <div class="section">
+                <h2 class="section-title">📊 TOURNAMENT OVERVIEW</h2>
+                <div class="stats-grid">
+                    <div class="stat-card group-a">
+                        <h3>GROUP A</h3>
+                        <p class="stat-number">{{ match_counts.A }}</p>
+                        <p class="stat-label">Matches Played</p>
+                        <p class="team-count">16 Teams</p>
+                    </div>
+                    <div class="stat-card group-b">
+                        <h3>GROUP B</h3>
+                        <p class="stat-number">{{ match_counts.B }}</p>
+                        <p class="stat-label">Matches Played</p>
+                        <p class="team-count">16 Teams</p>
+                    </div>
+                    <div class="stat-card group-c">
+                        <h3>GROUP C</h3>
+                        <p class="stat-number">{{ match_counts.C }}</p>
+                        <p class="stat-label">Matches Played</p>
+                        <p class="team-count">15 Teams</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">➕ ADD MATCH DATA</h2>
+                <div class="button-grid">
+                    <a href="{{ url_for('add_match_page', group='A') }}" class="action-btn group-a-btn">
+                        <span class="btn-icon">🅰️</span>
+                        <span class="btn-text">Add Group A Match</span>
+                    </a>
+                    <a href="{{ url_for('add_match_page', group='B') }}" class="action-btn group-b-btn">
+                        <span class="btn-icon">🅱️</span>
+                        <span class="btn-text">Add Group B Match</span>
+                    </a>
+                    <a href="{{ url_for('add_match_page', group='C') }}" class="action-btn group-c-btn">
+                        <span class="btn-icon">🅲</span>
+                        <span class="btn-text">Add Group C Match</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">📈 VIEW STANDINGS</h2>
+                <div class="button-grid">
+                    <a href="{{ url_for('leaderboard', group='A') }}" class="action-btn view-btn">
+                        <span class="btn-text">Group A Standings</span>
+                    </a>
+                    <a href="{{ url_for('leaderboard', group='B') }}" class="action-btn view-btn">
+                        <span class="btn-text">Group B Standings</span>
+                    </a>
+                    <a href="{{ url_for('leaderboard', group='C') }}" class="action-btn view-btn">
+                        <span class="btn-text">Group C Standings</span>
+                    </a>
+                    <a href="{{ url_for('combined_leaderboard') }}" class="action-btn combined-btn">
+                        <span class="btn-text">🏆 Combined Leaderboard</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; 2026 AAROHAN BGMI ELIMS - Tournament Points Table System</p>
+        </footer>
+    </div>
+</body>
+</html>

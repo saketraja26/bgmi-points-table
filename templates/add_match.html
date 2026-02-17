@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Match - Group {{ group }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo-container-small">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="AAROHAN Logo" class="tournament-logo-small">
+            </div>
+            <h1 class="title">AAROHAN BGMI ELIMS</h1>
+            <p class="subtitle">GROUP {{ group }} - MATCH {{ match_no }}</p>
+        </header>
+
+        <div class="back-link">
+            <a href="{{ url_for('index') }}">← Back to Dashboard</a>
+        </div>
+
+        <div class="match-entry-section">
+            <div class="teams-reference">
+                <h3>Teams in Group {{ group }}:</h3>
+                <div class="teams-list">
+                    {% for team in teams %}
+                    <span class="team-chip">{{ team }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <form id="matchForm" class="match-form">
+                <input type="hidden" id="group" value="{{ group }}">
+                <div id="ranksContainer" class="ranks-container">
+                    {% for i in range(1, teams|length + 1) %}
+                    <div class="rank-entry">
+                        <div class="rank-badge">
+                            <span class="rank-number">#{{ i }}</span>
+                            {% if i == 1 %}
+                            <span class="wwcd-badge">WWCD</span>
+                            {% endif %}
+                        </div>
+                        <div class="rank-inputs">
+                            <div class="input-group">
+                                <label for="team{{ i }}">Team Name</label>
+                                <input type="text" 
+                                       id="team{{ i }}" 
+                                       name="team{{ i }}" 
+                                       class="team-input" 
+                                       placeholder="Enter team name"
+                                       list="teamsList"
+                                       required>
+                            </div>
+                            <div class="input-group kills-group">
+                                <label for="kills{{ i }}">Kills</label>
+                                <input type="number" 
+                                       id="kills{{ i }}" 
+                                       name="kills{{ i }}" 
+                                       class="kills-input" 
+                                       min="0" 
+                                       value="0"
+                                       required>
+                            </div>
+                            <div class="points-display">
+                                <span class="placement-points">+{{ [10, 6, 5, 4, 3, 2, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0][i-1] if i <= 16 else 0 }} pts</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <datalist id="teamsList">
+                    {% for team in teams %}
+                    <option value="{{ team }}">
+                    {% endfor %}
+                </datalist>
+
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">💾 Save Match Data</button>
+                    <a href="{{ url_for('index') }}" class="cancel-btn">Cancel</a>
+                </div>
+            </form>
+        </div>
+
+        <div id="successMessage" class="success-message" style="display: none;">
+            <p>✓ Match saved successfully!</p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/match.js') }}"></script>
+</body>
+</html>

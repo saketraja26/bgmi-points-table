@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combined Leaderboard - All Groups</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo-container-small">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="AAROHAN Logo" class="tournament-logo-small">
+            </div>
+            <h1 class="title">AAROHAN BGMI ELIMS</h1>
+            <p class="subtitle">OVERALL STANDINGS - ALL GROUPS</p>
+            <p class="match-info">Total Matches: {{ total_matches }}</p>
+        </header>
+
+        <div class="back-link">
+            <a href="{{ url_for('index') }}">← Back to Dashboard</a>
+        </div>
+
+        {% if leaderboard %}
+        <div class="download-section">
+            <a href="{{ url_for('download_combined_leaderboard') }}" class="download-btn">
+                📥 Download PDF
+            </a>
+        </div>
+
+        <div class="leaderboard-container combined">
+            <div class="table-wrapper">
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th class="rank-col">RANK</th>
+                            <th class="team-col">TEAM NAME</th>
+                            <th class="group-col">GROUP</th>
+                            <th class="stat-col">WWCD</th>
+                            <th class="stat-col">PLCT.</th>
+                            <th class="stat-col">KILLS</th>
+                            <th class="stat-col total-col">TOTAL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in leaderboard %}
+                        <tr class="{% if loop.index <= 5 %}top-rank{% endif %}">
+                            <td class="rank-col">
+                                <span class="rank-number 
+                                    {% if loop.index == 1 %}rank-1
+                                    {% elif loop.index == 2 %}rank-2
+                                    {% elif loop.index == 3 %}rank-3
+                                    {% endif %}">
+                                    {{ row.RANK }}
+                                </span>
+                            </td>
+                            <td class="team-col">
+                                <span class="team-name">{{ row.Team }}</span>
+                            </td>
+                            <td class="group-col">
+                                <span class="group-badge group-{{ row.Group|lower }}">{{ row.Group }}</span>
+                            </td>
+                            <td class="stat-col">
+                                {% if row.WWCD > 0 %}
+                                <span class="wwcd-value">{{ row.WWCD|int }}</span>
+                                {% else %}
+                                <span class="empty-stat">-</span>
+                                {% endif %}
+                            </td>
+                            <td class="stat-col">{{ row.PLCT|int }}</td>
+                            <td class="stat-col">{{ row.Kills|int }}</td>
+                            <td class="stat-col total-col">
+                                <span class="total-points">{{ row.TOTAL|int }}</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% else %}
+        <div class="no-data">
+            <p>No match data available yet.</p>
+            <a href="{{ url_for('index') }}" class="action-btn">Go to Dashboard</a>
+        </div>
+        {% endif %}
+
+        <div class="action-buttons">
+            <a href="{{ url_for('leaderboard', group='A') }}" class="action-btn view-btn">Group A</a>
+            <a href="{{ url_for('leaderboard', group='B') }}" class="action-btn view-btn">Group B</a>
+            <a href="{{ url_for('leaderboard', group='C') }}" class="action-btn view-btn">Group C</a>
+        </div>
+    </div>
+</body>
+</html>
